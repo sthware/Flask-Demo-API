@@ -1,0 +1,43 @@
+#!/usr/bin/zsh
+
+ENV_FILE=".env"
+DEFAULT_RUN_HOST=0.0.0.0
+DEFAULT_PORT=5432
+
+if [ -f $ENV_FILE ]; then
+    echo "Loading env file"
+    source $ENV_FILE
+else
+    echo "No env file"
+fi
+
+if [ -z $DB_USER ]; then
+    echo "The DB_USER environment variable must be set to your database username"
+    exit 64
+fi
+
+if [ -z $DB_PASS ]; then
+    echo "The DB_PASS environment variable must be set to your database password"
+    exit 64
+fi
+
+if [ -z $DB_HOST ]; then
+    echo "The DB_HOST environment variable must be set to your database host"
+    exit 64
+fi
+
+if [ -z $DB_NAME ]; then
+    echo "The DB_NAME environment variable must be set to your database name"
+    exit 64
+fi
+
+if [ -z $DB_PORT ]; then
+    export DB_PORT=$DEFAULT_PORT
+fi
+
+if [ -z $RUN_HOST ]; then
+    export RUN_HOST=$DEFAULT_RUN_HOST
+fi
+
+flask run --host=$RUN_HOST
+exit 0
